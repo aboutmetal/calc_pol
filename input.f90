@@ -19,21 +19,24 @@ subroutine input(input_file, wfc_file, epsl_qd, epsl_sol, qd_radius, cell_size, 
 
     rewind(iread)
 
+    print *, "Reading input parameters..."
+    print *, "******************************************"
     read(iread, *) iindex, (cell_size(i), i=1,3)
-    write(6, '(A,3(1X,F13.5))') "Cell size:         ", (cell_size(i), i=1,3)
+    write(6, '(A,3(1X,F13.5))') "   Cell size:         ", (cell_size(i), i=1,3)
 
     read(iread, *) iindex, qd_radius, epsl_qd, epsl_sol
-    write(6, '(A,1X,F13.5)')    "QD radius:         ", qd_radius
-    write(6, '(A,2(1X,F13.5))') "epsilon (QD, sol): ", epsl_qd, epsl_sol
+    write(6, '(A,1X,F13.5)')    "   QD radius:         ", qd_radius
+    write(6, '(A,2(1X,F13.5))') "   epsilon (QD, sol): ", epsl_qd, epsl_sol
 
     read(iread, *) iindex, (grid_car(i), i=1,3)
-    write(6, '(A,3(1X,I5))') "Grid (Cartesian):  ", (grid_car(i), i=1,3)
+    write(6, '(A,3(1X,I5))') "   Grid (Cartesian):  ", (grid_car(i), i=1,3)
 
     read(iread, *) iindex, (grid_sph(i), i=1,3)
-    write(6, '(A,3(1X,I5))') "Grid (spherical):  ", (grid_sph(i), i=1,3)
+    write(6, '(A,3(1X,I5))') "   Grid (spherical):  ", (grid_sph(i), i=1,3)
 
     read(iread, *) iindex, wfc_file(1)
     read(iread, *) iindex, wfc_file(2)
+    print *, "  Wfc files: ", trim(adjustl(wfc_file(1))), "  ", trim(adjustl(wfc_file(2)))
 
     close(iread)
 

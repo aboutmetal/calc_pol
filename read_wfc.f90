@@ -12,19 +12,19 @@ subroutine read_wfc(wfc_file, grid_car)
     real(8), dimension(3,3) :: AL
     integer, parameter      :: iread1 = 18, iread2 = 20
 
-    open(iread1, file=trim(adjustl(wfc_file(1))), status='old', action='read', iostat=ierr)
+    open(iread1, file=trim(adjustl(wfc_file(1))), status='old', action='read', form='unformatted', iostat=ierr)
     if(ierr.ne.0) then
         print *, "--ERROR: cannot open file ", trim(adjustl(wfc_file(1)))
         stop
     endif
-    open(iread2, file=trim(adjustl(wfc_file(2))), status='old', action='read', iostat=ierr)
+    open(iread2, file=trim(adjustl(wfc_file(2))), status='old', action='read', form='unformatted', iostat=ierr)
     if(ierr.ne.0) then
         print *, "--ERROR: cannot open file ", trim(adjustl(wfc_file(2)))
         stop
     endif
 
-    allocate(wfc_real(grid_car(1)*grid_car(2)*grid_car(3)))
-    allocate(wfc_imag(grid_car(1)*grid_car(2)*grid_car(3)))
+    print *, "Reading wavefunctions..."
+    print *, "******************************************"
 
     rewind(iread1)
     read(iread1) n1,n2,n3,nnodes
@@ -39,8 +39,6 @@ subroutine read_wfc(wfc_file, grid_car)
         print *, "--ERROR: grid dismatch, stop"
         stop
     endif
-    read(iread1) wfc_real
-    close(iread1)
 
     rewind(iread2)
     read(iread2) n1,n2,n3,nnodes
@@ -55,25 +53,41 @@ subroutine read_wfc(wfc_file, grid_car)
         print *, "--ERROR: grid dismatch, stop"
         stop
     endif
-    read(iread2) wfc_imag
-    close(iread2)
 
     nr = n1*n2*n3
     nr_n = nr / nnodes
 
+    allocate(wfc_real(nr_n))
+    allocate(wfc_imag(nr_n))
+
     do inode = 1, nnodes
+        read(iread1) wfc_real
+        read(iread2) wfc_imag
         do ii = 1, nr_n
             jj = ii + (inode-1) * nr_n
             i = (jj-1) / (n2*n3) + 1
             j = (jj-1 - (i-1) * n2*n3) / n3 + 1
             k = jj - (i-1) * n2*n3 - (j-1) * n3
-            wfc_car(i-1,j-1,k-1) = cmplx(wfc_real(jj), wfc_imag(jj))
+            wfc_car(i-1,j-1,k-1) = cmplx(wfc_real(ii), wfc_imag(ii))
         enddo
     enddo
+
+    close(iread1)
+    close(iread2)
 
     wfc_car(n1,:,:) = wfc_car(0,:,:)
     wfc_car(:,n2,:) = wfc_car(:,0,:)
     wfc_car(:,:,n3) = wfc_car(:,:,0)
+
+!    do k = 0, 3
+!    do j = 0, 3
+!    do i = 0, 3
+!        print *, i,j,k,wfc_car(i,j,k)
+!    enddo
+!    enddo
+!    enddo
+
+    print *, "******************************************"
 
     deallocate(wfc_real)
     deallocate(wfc_imag)
