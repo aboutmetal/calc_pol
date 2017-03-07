@@ -28,7 +28,7 @@ program polarization
 
     call integral(V, epsl_qd, epsl_sol, qd_radius, grid_sph, dis_sph)
 
-    write(6, '(A,2(1X,F17.9))') "   V :                ", real(V), imag(V)
+    write(6, '(A,2(1X,F17.9))') "   V :                ", real(V)*27.211396d0
 
     call module_deallocate_wfc(1)
     call module_deallocate_wfc(2)

@@ -14,7 +14,7 @@ subroutine integral(V, epsl_in, epsl_out, radius, grid, dis)
 
     allocate(Vs(0:grid(1)))
 
-    lamda = 1.d-2
+    lamda = 1.d-3
 
     ! Lengendre
     print *, "Calculating polarization potential..."
@@ -23,19 +23,19 @@ subroutine integral(V, epsl_in, epsl_out, radius, grid, dis)
     do i = 0, grid(1)
         r = i * dis(1)
         if(r.le.radius) then
-            do l = 1, 50
+            do l = 1, 100
                 Vs(i) = Vs(i) + (1.d0 - exp(0.d0 - (r-radius)**2 / lamda**2)) * &
                         (dble(l) + 1.d0) * (r/radius)**(2*l) / &
                         (epsl_out + dble(l) * (epsl_in + epsl_out))
             enddo
-            Vs(i) = 0.d0 - Vs(i) * (epsl_in - epsl_out) / epsl_in / 2.d0 / radius
+            Vs(i) = Vs(i) * (epsl_in - epsl_out) / epsl_in / radius
         else
-            do l = 1, 50
+            do l = 1, 100
                 Vs(i) = Vs(i) - (1.d0 - exp(0.d0 - (r-radius)**2 / lamda**2)) * &
                         dble(l) * (radius/r)**(2*l+2) / &
                         (epsl_out + dble(l) * (epsl_in + epsl_out))
             enddo
-            Vs(i) = 0.d0 - Vs(i) * (epsl_in - epsl_out) / epsl_out / 2.d0 / radius
+            Vs(i) = Vs(i) * (epsl_in - epsl_out) / epsl_out / radius
         endif
     enddo
 
