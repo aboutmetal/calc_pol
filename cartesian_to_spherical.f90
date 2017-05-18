@@ -23,7 +23,7 @@ subroutine car_to_sph(grid_in, dis_in, grid_out, dis_out)
     center(1:3) = dis_in(1:3) * dble(grid_in(1:3)) / 2.d0
 
     ! select the shortest direction, then determine the r gridding length
-    dis_out(1) = min(center(1), center(2), center(3)) / dble(grid_out(1))
+    dis_out(1) = max(center(1), center(2), center(3)) / dble(grid_out(1))
 
     dis_out(2) = Pi / dble(grid_out(2))
     dis_out(3) = 2.d0*Pi / dble(grid_out(3))
@@ -45,6 +45,10 @@ subroutine car_to_sph(grid_in, dis_in, grid_out, dis_out)
                 pos(1) = r * sin(theta) * cos(phi) + center(1)
                 pos(2) = r * sin(theta) * sin(phi) + center(2)
                 pos(3) = r * cos(theta)            + center(3)
+
+                if(pos(1) .le. (dble(grid_in(1)) * dis_in(1) + 1.d-6) .and. pos(1) .ge. 0.d0 .and. &
+                   pos(2) .le. (dble(grid_in(2)) * dis_in(2) + 1.d-6) .and. pos(2) .ge. 0.d0 .and. &
+                   pos(3) .le. (dble(grid_in(3)) * dis_in(3) + 1.d-6) .and. pos(3) .ge. 0.d0) then
 
                 ! find neighbors
                 x0 = floor(pos(1) / dis_in(1))
@@ -73,6 +77,13 @@ subroutine car_to_sph(grid_in, dis_in, grid_out, dis_out)
                 c1 = c01 * (1.d0 - pos(2)) + c11 * pos(2)
                 c = c0 * (1.d0 - pos(3)) + c1 * pos(3)
                 wfc_sph(ir, itheta, iphi) = c
+
+                else
+
+                wfc_sph(ir, itheta, iphi) = cmplx(0.d0, 0.d0)
+
+                endif
+
             enddo
         enddo
     enddo
