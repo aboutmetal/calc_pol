@@ -1,0 +1,49 @@
+-----------------------------------------------------
+|       Self polarization energy calculation        |
+|       for spherical quantum dots                  |
+|                                                   |
+|       A.F., A.Z., PRB 62 2614 (2000)              |
+|       Eq.(30) - (32)                              |
+|                                                   |
+|       https://github.com/aboutmetal/calc_pol      |
+-----------------------------------------------------
+
+Input files:
+-----------------------------------------------------
+    1. sigma_pol.input
+    2. Your wavefunction files,
+       from CPMD, PEtot, or VASP
+-----------------------------------------------------
+
+Output file:
+-----------------------------------------------------
+    log.XXXX:
+        Self polarization energy (in eV), 
+        with different solvent epsilons.
+-----------------------------------------------------
+
+An example of sigma_pol.input:
+-----------------------------------------------------
+1   56.6489205d0, 56.6489205d0, 56.6489205d0        | Cell size (Bohr)
+2   16.18d0, 8.32d0, 1.d0, 1.d0                     | R_QD(Bohr), e_in, e_out, lamda(Bohr)
+3   240, 240, 240                                   | Cartesian grid (must be the same with ones in wfc files)
+4   120, 240, 480                                   | Spherical grid
+5   1                                               | Wavefunction type (1=PEtot, 2=CPMD)
+6   wfc_real.348                                    | Wfc filename. For CPMD wfc, one line is enough;
+7   wfc_imag.348                                    | for PEtot wfc, two lines are required (real, imag)
+
+! line 1: Cell size in Angstrom
+! line 2: QD radius, QD epsilon, solvent epsilon, lamda
+!         see Alex's original paper from the 
+!         meaning of lamda
+! line 3: Cartesian gridding in your wavefunction file,
+!         x->y->z, i.e., the real space FFT gridding
+! line 4: Spherical gridding, r -> theta -> phi
+!         Choose whatever value you prefer
+!         Too dense or too sparse gridding is bad
+! line 5: What kind of wavefunction you use
+!         1 for PEtot, 2 for CPMD
+! line 6: Following line 5, the filename of wfc
+! line 7: Following line 6 if required,
+!         only for PEtot wfc
+-----------------------------------------------------

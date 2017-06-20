@@ -8,16 +8,18 @@ subroutine integral(V, epsl_in, epsl_out, radius, lamda, grid, dis)
     real(8)                 :: epsl_in, epsl_out, radius, lamda
     complex(8)              :: V
 
-    integer :: i, j, k, l, iepsl
+    integer :: i, j, k, l, iepsl, itmp, itmp2
     real(8) :: r, theta, phi
     real(8), dimension(:), allocatable :: Vs
 
+    character(66) :: bar
     character(len=20) :: filename, fileindex
 
     allocate(Vs(0:grid(1)))
 
     write(fileindex, '(E10.3)') lamda
     filename = 'log.'//trim(adjustl(fileindex))
+    print *, "Output to ", trim(adjustl(filename))
     open(19, file=filename)
     rewind(19)
 
@@ -73,6 +75,15 @@ subroutine integral(V, epsl_in, epsl_out, radius, lamda, grid, dis)
     enddo
 
     write(19, '(2(1X,F17.9))') epsl_out, real(V)*27.211396d0
+
+    itmp  = (iepsl *  60) / (190)
+    itmp2 = (iepsl * 100) / (190)
+    write(bar(1:3),'(I3)') itmp2
+    bar(4:5) = '% '
+    do itmp2 = 0, itmp
+        bar(6+itmp2:6+itmp2) = '|'
+    enddo
+    write(6,'(A1,A66,$)') char(13),bar
 
     enddo
 

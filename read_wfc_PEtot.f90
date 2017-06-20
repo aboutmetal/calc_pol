@@ -2,7 +2,7 @@ subroutine read_wfc_PEtot(wfc_file, grid_car)
 
     ! Read wavefunction (wfc) from external files
     ! The wfc should be read into 3-D Cartesian coordinates
-    ! Note that the index should start from 0, not 1
+    ! Note that the index start from 0, not 1
 
     use module_data
     implicit none
@@ -93,28 +93,28 @@ subroutine read_wfc_PEtot(wfc_file, grid_car)
     wfc_car(:,:,n3) = wfc_car(:,:,0)
 
     ! Output wfc file for mxmat
-    open(19,file='graph.mxmat.output',status='new',action='write')
-    rewind(19)
-    write(19,*) "Wave function NR:           1"
-    write(19,*) "(((wr_out_cmplx(it,jt,kt,1),it=1,n1r),jt=1,n2r),kt=1,n3r)"
-    do k = 1, n3
-    do j = 1, n2
-    do i = 1, n1
-        write(19,*) wfc_car(i,j,k)
-    enddo
-    enddo
-    enddo
-    write(19,*) "Wave function NR:           1"
-    write(19,*) "(((wr_out_cmplx(it,jt,kt,1),it=1,n1r),jt=1,n2r),kt=1,n3r)"
-    do k = 1, n3
-    do j = 1, n2
-    do i = 1, n1
-        write(19,*) cmplx(0.d0, 0.d0)
-    enddo
-    enddo
-    enddo
-    close(19)
-    stop
+!    open(19,file='graph.mxmat.output',status='new',action='write')
+!    rewind(19)
+!    write(19,*) "Wave function NR:           1"
+!    write(19,*) "(((wr_out_cmplx(it,jt,kt,1),it=1,n1r),jt=1,n2r),kt=1,n3r)"
+!    do k = 1, n3
+!    do j = 1, n2
+!    do i = 1, n1
+!        write(19,*) wfc_car(i,j,k)
+!    enddo
+!    enddo
+!    enddo
+!    write(19,*) "Wave function NR:           1"
+!    write(19,*) "(((wr_out_cmplx(it,jt,kt,1),it=1,n1r),jt=1,n2r),kt=1,n3r)"
+!    do k = 1, n3
+!    do j = 1, n2
+!    do i = 1, n1
+!        write(19,*) cmplx(0.d0, 0.d0)
+!    enddo
+!    enddo
+!    enddo
+!    close(19)
+!    stop
 
     print *, "******************************************"
 

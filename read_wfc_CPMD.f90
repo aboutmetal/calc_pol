@@ -2,7 +2,7 @@ subroutine read_wfc_CPMD(wfc_file, grid_car)
 
     ! Read wavefunction (wfc) from external files
     ! The wfc should be read into 3-D Cartesian coordinates
-    ! Note that the index should start from 0, not 1
+    ! Note that the index start from 0, not 1
 
     use module_data
     implicit none
@@ -18,7 +18,6 @@ subroutine read_wfc_CPMD(wfc_file, grid_car)
     integer, parameter      :: iread1 = 18, iread2 = 20
 
     ! open wfc files
-    ! PEtot outputs wfc in real and imag parts, so read them separately
     open(iread1, file=trim(adjustl(wfc_file(1))), status='old', action='read', iostat=ierr)
     if(ierr.ne.0) then
         print *, "--ERROR: cannot open file ", trim(adjustl(wfc_file(1)))

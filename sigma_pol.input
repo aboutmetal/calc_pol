@@ -1,0 +1,7 @@
+1   56.6489205d0, 56.6489205d0, 56.6489205d0        | Cell size (Bohr)
+2   16.18d0, 8.32d0, 1.d0, 1.d0                     | R_QD(Bohr), e_in, e_out, lamda(Bohr)
+3   240, 240, 240                                   | Cartesian grid (must be the same with ones in wfc files)
+4   120, 240, 480                                   | Spherical grid
+5   1                                               | Wavefunction type (1=PEtot, 2=CPMD)
+6   wfc_real.348                                    | Wfc filename. For CPMD wfc, one line is enough;
+7   wfc_imag.348                                    | for PEtot wfc, two lines are required (real, imag)
