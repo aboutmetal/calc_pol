@@ -67,8 +67,10 @@ subroutine read_wfc_CPMD(wfc_file, grid_car)
                 read(iread1,*) (tmp(jj), jj=1,6)
                 wfc_car(i,j,(ii+1):(ii+6)) = cmplx(tmp(1:6), 0.d0)
             enddo
-            read(iread1,*) (tmp(jj), jj=1,(n3-6*nr_n))
-            wfc_car(i,j,(6*nr_n+1):n3) = cmplx(tmp(1:(n3-6*nr_n)), 0.d0)
+            if(n3.ne.(6*nr_n)) then
+                read(iread1,*) (tmp(jj), jj=1,(n3-6*nr_n))
+                wfc_car(i,j,(6*nr_n+1):n3) = cmplx(tmp(1:(n3-6*nr_n)), 0.d0)
+            endif
         enddo
     enddo
 
