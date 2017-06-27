@@ -65,11 +65,11 @@ subroutine read_wfc_CPMD(wfc_file, grid_car)
             do k = 1, nr_n
                 ii = (k - 1) * 6
                 read(iread1,*) (tmp(jj), jj=1,6)
-                wfc_car(i,j,(ii+1):(ii+6)) = cmplx(tmp(1:6), 0.d0)
+                wfc_car(i-1,j-1,ii:(ii+5)) = cmplx(tmp(1:6), 0.d0)
             enddo
             if(n3.ne.(6*nr_n)) then
                 read(iread1,*) (tmp(jj), jj=1,(n3-6*nr_n))
-                wfc_car(i,j,(6*nr_n+1):n3) = cmplx(tmp(1:(n3-6*nr_n)), 0.d0)
+                wfc_car(i-1,j-1,(6*nr_n):(n3-1)) = cmplx(tmp(1:(n3-6*nr_n)), 0.d0)
             endif
         enddo
     enddo
@@ -77,9 +77,9 @@ subroutine read_wfc_CPMD(wfc_file, grid_car)
     close(iread1)
 
     ! Set values on the boundaries
-    wfc_car(0,:,:) = wfc_car(n1,:,:)
-    wfc_car(:,0,:) = wfc_car(:,n2,:)
-    wfc_car(:,:,0) = wfc_car(:,:,n3)
+    wfc_car(n1,:,:) = wfc_car(0,:,:)
+    wfc_car(:,n2,:) = wfc_car(:,0,:)
+    wfc_car(:,:,n3) = wfc_car(:,:,0)
 
 !    do k = 0, 3
 !    do j = 0, 3
